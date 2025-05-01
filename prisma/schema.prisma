@@ -9,29 +9,38 @@ datasource db {
 }
 
 model Song {
-  id            String         @id @default(uuid())
-  title         String
-  album         Album?         @relation(fields: [albumId], references: [id])
-  albumId       String?
+  id    String @id @default(uuid())
+  title String
+
+  artist   Artist @relation(fields: [artistId], references: [id])
+  artistId String
+
+  album   Album?  @relation(fields: [albumId], references: [id])
+  albumId String?
+
   playlistsSong PlaylistSong[]
 
   @@map("songs")
 }
 
 model Artist {
-  id     String  @id @default(uuid())
-  name   String
+  id   String @id @default(uuid())
+  name String
+
   albums Album[]
+  Song   Song[]
 
   @@map("artists")
 }
 
 model Album {
-  id       String @id @default(uuid())
-  title    String
+  id    String @id @default(uuid())
+  title String
+
   artist   Artist @relation(fields: [artistId], references: [id])
-  songs    Song[]
   artistId String
+
+  songs Song[]
 
   @@map("albums")
 }
@@ -49,8 +58,9 @@ model PlaylistSong {
 
   playlistId String
   playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  songId     String
-  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  songId String
+  song   Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
 
   @@unique([playlistId, songId])
 }

@@ -11,6 +11,7 @@ import { getArtistSongs } from "./routes/get-artists-songs";
 import { getAlbums } from "./routes/get-albums";
 import { getAlbumSongs } from "./routes/get-album-songs";
 import { createPlaylist } from "./routes/create-playlist";
+import { getPlaylists } from "./routes/get-playlists";
 
 const app = fastify();
 
@@ -28,6 +29,7 @@ app.register(getArtistSongs);
 app.register(getAlbums);
 app.register(getAlbumSongs);
 app.register(createPlaylist);
+app.register(getPlaylists);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log("Server running!");

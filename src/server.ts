@@ -5,6 +5,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { createMusic } from "./routes/create-music";
+import { getMusics } from "./routes/get-musics";
 
 const app = fastify();
 
@@ -16,6 +17,7 @@ app.get("/", () => {
 });
 
 app.register(createMusic);
+app.register(getMusics);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log("Server running!");

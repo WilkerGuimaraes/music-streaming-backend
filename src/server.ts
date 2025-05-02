@@ -18,6 +18,7 @@ import { updatePlaylist } from "./routes/update-playlist";
 import { getSongsFromPlaylist } from "./routes/get-songs-from-playlist";
 import { deleteSong } from "./routes/delete-song";
 import { deletePlaylist } from "./routes/delete-playlist";
+import { removeSongFromPlaylist } from "./routes/remove-song-from-playlist";
 
 const app = fastify();
 
@@ -42,6 +43,7 @@ app.register(updatePlaylist);
 app.register(getSongsFromPlaylist);
 app.register(deleteSong);
 app.register(deletePlaylist);
+app.register(removeSongFromPlaylist);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log("Server running!");

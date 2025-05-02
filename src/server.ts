@@ -6,6 +6,7 @@ import {
 } from "fastify-type-provider-zod";
 import { createMusic } from "./routes/create-music";
 import { getMusics } from "./routes/get-musics";
+import { getArtists } from "./routes/get-artists";
 
 const app = fastify();
 
@@ -18,6 +19,7 @@ app.get("/", () => {
 
 app.register(createMusic);
 app.register(getMusics);
+app.register(getArtists);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log("Server running!");

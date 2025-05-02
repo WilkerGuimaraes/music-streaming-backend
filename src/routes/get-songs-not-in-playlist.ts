@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export async function getSongsNotInPlaylist(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/playlists/:playlistId/songs",
+    "/playlists/:playlistId/songs/not-in-playlist",
     {
       schema: {
         params: z.object({

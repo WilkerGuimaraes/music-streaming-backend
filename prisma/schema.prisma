@@ -25,7 +25,7 @@ model Song {
 
 model Artist {
   id   String @id @default(uuid())
-  name String
+  name String @unique
 
   albums Album[]
   Song   Song[]
@@ -35,7 +35,7 @@ model Artist {
 
 model Album {
   id    String @id @default(uuid())
-  title String
+  title String @unique
 
   artist   Artist @relation(fields: [artistId], references: [id])
   artistId String
@@ -47,7 +47,7 @@ model Album {
 
 model Playlist {
   id    String         @id @default(uuid())
-  name  String
+  name  String         @unique
   songs PlaylistSong[]
 
   @@map("playlists")

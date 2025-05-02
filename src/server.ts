@@ -14,6 +14,7 @@ import { createPlaylist } from "./routes/create-playlist";
 import { getPlaylists } from "./routes/get-playlists";
 import { getSongsNotInPlaylist } from "./routes/get-songs-not-in-playlist";
 import { addSongToPlaylist } from "./routes/add-song-to-playlist";
+import { updatePlaylist } from "./routes/update-playlist";
 
 const app = fastify();
 
@@ -34,6 +35,7 @@ app.register(createPlaylist);
 app.register(getPlaylists);
 app.register(getSongsNotInPlaylist);
 app.register(addSongToPlaylist);
+app.register(updatePlaylist);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log("Server running!");

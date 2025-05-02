@@ -56,10 +56,10 @@ model Playlist {
 model PlaylistSong {
   id String @id @default(uuid())
 
-  playlistId String
+  playlistId String   @unique
   playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
 
-  songId String
+  songId String @unique
   song   Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
 
   @@unique([playlistId, songId])

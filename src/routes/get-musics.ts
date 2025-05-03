@@ -8,6 +8,9 @@ export async function getMusics(app: FastifyInstance) {
         artist: true,
         album: true,
       },
+      orderBy: {
+        title: "asc",
+      },
     });
 
     return reply.status(200).send(songs);

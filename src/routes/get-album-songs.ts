@@ -29,6 +29,9 @@ export async function getAlbumSongs(app: FastifyInstance) {
         include: {
           artist: true,
         },
+        orderBy: {
+          title: "asc",
+        },
       });
 
       const formatted = songs.map((song) => ({

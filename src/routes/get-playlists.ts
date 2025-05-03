@@ -10,6 +10,9 @@ export async function getPlaylists(app: FastifyInstance) {
         include: {
           songs: true,
         },
+        orderBy: {
+          name: "asc",
+        },
       });
 
       const playlistsWithSongCount = playlists.map((playlist) => ({

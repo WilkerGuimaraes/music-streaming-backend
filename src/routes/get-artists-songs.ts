@@ -32,6 +32,9 @@ export async function getArtistSongs(app: FastifyInstance) {
           id: true,
           title: true,
         },
+        orderBy: {
+          title: "asc",
+        },
       });
 
       return reply.send(songs);

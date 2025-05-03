@@ -26,6 +26,9 @@ export async function getSongsNotInPlaylist(app: FastifyInstance) {
             },
           },
         },
+        orderBy: {
+          title: "asc",
+        },
       });
 
       return songsNotInPlaylist;

@@ -33,6 +33,9 @@ export async function getSongsFromPlaylist(app: FastifyInstance) {
             },
           },
         },
+        orderBy: {
+          title: "asc",
+        },
       });
 
       return reply.send({

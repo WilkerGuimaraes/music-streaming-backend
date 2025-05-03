@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import { env } from "../env";
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
@@ -19,14 +20,26 @@ import { getSongsFromPlaylist } from "./routes/get-songs-from-playlist";
 import { deleteSong } from "./routes/delete-song";
 import { deletePlaylist } from "./routes/delete-playlist";
 import { removeSongFromPlaylist } from "./routes/remove-song-from-playlist";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 
 const app = fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-app.get("/", () => {
-  return "Hello World!";
+app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: "Streaming music",
+      version: "0.0.1",
+    },
+  },
+  transform: jsonSchemaTransform,
+});
+
+app.register(fastifySwaggerUi, {
+  routePrefix: "/docs",
 });
 
 app.register(createMusic);

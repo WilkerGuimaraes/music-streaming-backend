@@ -12,12 +12,15 @@ export async function getAlbumSongs(app: FastifyInstance) {
           albumId: z.string().uuid(),
         }),
         response: {
-          200: z.array(
-            z.object({
-              title: z.string(),
-              artistName: z.string(),
-            })
-          ),
+          200: z.object({
+            albumTitle: z.string().optional(),
+            songs: z.array(
+              z.object({
+                title: z.string(),
+                artistName: z.string(),
+              })
+            ),
+          }),
         },
       },
     },
@@ -28,18 +31,33 @@ export async function getAlbumSongs(app: FastifyInstance) {
         where: { albumId },
         include: {
           artist: true,
+          album: true,
         },
         orderBy: {
           title: "asc",
         },
       });
 
-      const formatted = songs.map((song) => ({
+      if (songs.length === 0) {
+        const album = await prisma.album.findUnique({
+          where: { id: albumId },
+        });
+
+        return reply.send({
+          albumTitle: album?.title ?? "Álbum desconhecido",
+          songs: [],
+        });
+      }
+
+      const formattedSongs = songs.map((song) => ({
         title: song.title,
         artistName: song.artist.name,
       }));
 
-      return reply.send(formatted);
+      return reply.send({
+        albumTitle: songs[0].album?.title,
+        songs: formattedSongs,
+      });
     }
   );
 }

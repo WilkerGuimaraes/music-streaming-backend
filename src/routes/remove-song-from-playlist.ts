@@ -20,7 +20,9 @@ export async function removeSongFromPlaylist(app: FastifyInstance) {
       const relation = await prisma.playlistSong.findFirst({
         where: {
           playlistId,
-          songId,
+        },
+        include: {
+          song: true,
         },
       });
 

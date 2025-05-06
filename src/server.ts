@@ -22,11 +22,14 @@ import { deletePlaylist } from "./routes/delete-playlist";
 import { removeSongFromPlaylist } from "./routes/remove-song-from-playlist";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyCors from "@fastify/cors";
 
 const app = fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+app.register(fastifyCors);
 
 app.register(fastifySwagger, {
   openapi: {

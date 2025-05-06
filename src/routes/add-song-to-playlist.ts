@@ -20,6 +20,41 @@ export async function addSongToPlaylist(app: FastifyInstance) {
       const { playlistId } = request.params;
       const { songId } = request.body;
 
+      const playlist = await prisma.playlist.findUnique({
+        where: { id: playlistId },
+      });
+
+      if (!playlist) {
+        return reply.status(404).send({
+          message: "Playlist não encontrada.",
+        });
+      }
+
+      const song = await prisma.song.findUnique({
+        where: { id: songId },
+      });
+
+      if (!song) {
+        return reply.status(404).send({
+          message: "Música não encontrada.",
+        });
+      }
+
+      const alreadyInPlaylist = await prisma.playlistSong.findUnique({
+        where: {
+          playlistId_songId: {
+            playlistId,
+            songId,
+          },
+        },
+      });
+
+      if (alreadyInPlaylist) {
+        return reply.status(400).send({
+          message: "Essa música já está na playlist.",
+        });
+      }
+
       const playlistSong = await prisma.playlistSong.create({
         data: {
           playlistId,
@@ -27,12 +62,10 @@ export async function addSongToPlaylist(app: FastifyInstance) {
         },
       });
 
-      return reply
-        .status(201)
-        .send({
-          message: "Música adicionada à playlist com sucesso!",
-          playlistSong,
-        });
+      return reply.status(201).send({
+        message: "Música adicionada à playlist com sucesso!",
+        playlistSong,
+      });
     }
   );
 }

@@ -11,6 +11,15 @@ export async function getSongsNotInPlaylist(app: FastifyInstance) {
         params: z.object({
           playlistId: z.string().uuid(),
         }),
+        response: {
+          200: z.array(
+            z.object({
+              id: z.string().uuid(),
+              title: z.string(),
+              artistName: z.string(),
+            })
+          ),
+        },
       },
     },
     async (request, reply) => {
@@ -26,12 +35,27 @@ export async function getSongsNotInPlaylist(app: FastifyInstance) {
             },
           },
         },
+        select: {
+          id: true,
+          title: true,
+          artist: {
+            select: {
+              name: true,
+            },
+          },
+        },
         orderBy: {
           title: "asc",
         },
       });
 
-      return songsNotInPlaylist;
+      const formattedSongs = songsNotInPlaylist.map((song) => ({
+        id: song.id,
+        title: song.title,
+        artistName: song.artist.name,
+      }));
+
+      return reply.status(200).send(formattedSongs);
     }
   );
 }

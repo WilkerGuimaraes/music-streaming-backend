@@ -6,7 +6,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { createMusic } from "./routes/create-music";
-import { getMusics } from "./routes/get-musics";
+import { getMusics } from "./routes/get-songs";
 import { getArtists } from "./routes/get-artists";
 import { getArtistSongs } from "./routes/get-artists-songs";
 import { getAlbums } from "./routes/get-albums";

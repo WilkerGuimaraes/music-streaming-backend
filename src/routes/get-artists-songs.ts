@@ -12,32 +12,48 @@ export async function getArtistSongs(app: FastifyInstance) {
           artistId: z.string().uuid({ message: "ID do artista inválido." }),
         }),
         response: {
-          200: z.array(
-            z.object({
-              id: z.string(),
-              title: z.string(),
-            })
-          ),
+          200: z.object({
+            artistName: z.string(),
+            songs: z.array(
+              z.object({
+                id: z.string(),
+                title: z.string(),
+              })
+            ),
+          }),
+          404: z.object({
+            message: z.string(),
+          }),
         },
       },
     },
     async (request, reply) => {
       const { artistId } = request.params;
 
-      const songs = await prisma.song.findMany({
-        where: {
-          artistId,
-        },
+      const artist = await prisma.artist.findUnique({
+        where: { id: artistId },
         select: {
-          id: true,
-          title: true,
-        },
-        orderBy: {
-          title: "asc",
+          name: true,
+          Song: {
+            select: {
+              id: true,
+              title: true,
+            },
+            orderBy: {
+              title: "asc",
+            },
+          },
         },
       });
 
-      return reply.send(songs);
+      if (!artist) {
+        return reply.status(404).send({ message: "Artista não encontrado." });
+      }
+
+      return reply.send({
+        artistName: artist.name,
+        songs: artist.Song,
+      });
     }
   );
 }
